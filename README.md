@@ -126,9 +126,3 @@ How to create and manage a relational database
 Using primary and foreign keys to connect tables
 Writing SQL queries for data extraction and analysis
 Structuring a real-world database project for GitHub and LinkedIn
-
-📎 Author
-
-👩‍💻 Ashwini Kuwar
-📍 BSc Computer Science Student
-💼 Aspiring Data Analyst | SQL Learner | Tech Enthusiast
