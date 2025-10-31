@@ -16,22 +16,27 @@ Marks	Stores the marks obtained by each student in various subjects.
 CREATE DATABASE student_management;
 USE student_management;
 
--- Table 1: Students
-CREATE TABLE Students (
+-- 1️⃣ Create Database
+CREATE DATABASE IF NOT EXISTS student_management;
+USE student_management;
+
+-- 2️⃣ Create Students Table
+CREATE TABLE IF NOT EXISTS Students (
     student_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50),
+    age INT,
     gender VARCHAR(10),
     class VARCHAR(20)
 );
 
--- Table 2: Subjects
-CREATE TABLE Subjects (
+-- 3️⃣ Create Subjects Table
+CREATE TABLE IF NOT EXISTS Subjects (
     subject_id INT PRIMARY KEY AUTO_INCREMENT,
     subject_name VARCHAR(50)
 );
 
--- Table 3: Marks
-CREATE TABLE Marks (
+-- 4️⃣ Create Marks Table
+CREATE TABLE IF NOT EXISTS Marks (
     mark_id INT PRIMARY KEY AUTO_INCREMENT,
     student_id INT,
     subject_id INT,
@@ -40,31 +45,75 @@ CREATE TABLE Marks (
     FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id)
 );
 
-💡 Sample Queries
--- Insert sample data
-INSERT INTO Students (name, gender, class)
-VALUES ('Ravi Kumar', 'Male', '10A'),
-       ('Priya Sharma', 'Female', '10B'),
-       ('Amit Verma', 'Male', '10A');
+-- 5️⃣ Insert Sample Data
 
-INSERT INTO Subjects (subject_name)
-VALUES ('Math'), ('Science'), ('English');
+-- Students
+INSERT INTO Students (name, age, gender, class) VALUES
+('Aarav Sharma', 20, 'Male', 'FYBSc CS'),
+('Priya Mehta', 21, 'Female', 'SYBSc CS'),
+('Rahul Patil', 22, 'Male', 'TYBSc CS'),
+('Sneha Desai', 20, 'Female', 'FYBSc CS'),
+('Vikram Joshi', 21, 'Male', 'SYBSc CS');
 
-INSERT INTO Marks (student_id, subject_id, marks)
-VALUES (1, 1, 85), (1, 2, 90), (2, 1, 78), (3, 3, 88);
+-- Subjects
+INSERT INTO Subjects (subject_name) VALUES
+('Database Management Systems'),
+('Data Structures'),
+('Operating Systems'),
+('Computer Networks'),
+('Python Programming');
 
--- Fetch student marks with subject names
-SELECT s.name, sub.subject_name, m.marks
-FROM Marks m
-JOIN Students s ON m.student_id = s.student_id
+-- Marks
+INSERT INTO Marks (student_id, subject_id, marks) VALUES
+(1, 1, 85),
+(1, 2, 78),
+(1, 3, 90),
+(2, 1, 88),
+(2, 2, 67),
+(2, 3, 73),
+(3, 1, 91),
+(3, 4, 82),
+(4, 5, 95),
+(5, 2, 76),
+(5, 3, 84);
+
+-- 6️⃣ Queries
+
+-- View all students
+SELECT * FROM Students;
+
+-- View all subjects
+SELECT * FROM Subjects;
+
+-- Join students and marks with subject names
+SELECT s.name AS Student_Name, sub.subject_name, m.marks
+FROM Students s
+JOIN Marks m ON s.student_id = m.student_id
 JOIN Subjects sub ON m.subject_id = sub.subject_id;
 
--- Find top-performing students
-SELECT s.name, AVG(m.marks) AS average_marks
-FROM Marks m
-JOIN Students s ON m.student_id = s.student_id
+-- Average marks per student
+SELECT s.name AS Student_Name, AVG(m.marks) AS Average_Marks
+FROM Students s
+JOIN Marks m ON s.student_id = m.student_id
+GROUP BY s.name;
+
+-- Top-performing students (average > 80)
+SELECT s.name, AVG(m.marks) AS avg_marks
+FROM Students s
+JOIN Marks m ON s.student_id = m.student_id
 GROUP BY s.name
-ORDER BY average_marks DESC;
+HAVING avg_marks > 80
+ORDER BY avg_marks DESC;
+
+-- 7️⃣ Create a View for Easy Access
+CREATE OR REPLACE VIEW student_performance AS
+SELECT s.name AS Student_Name, s.class, sub.subject_name, m.marks
+FROM Students s
+JOIN Marks m ON s.student_id = m.student_id
+JOIN Subjects sub ON m.subject_id = sub.subject_id;
+
+-- 8️⃣ Display View
+SELECT * FROM student_performance;
 
 ⚙️ Technologies Used
 MySQL / SQL Workbench
