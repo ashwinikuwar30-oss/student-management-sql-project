@@ -1,5 +1,6 @@
 # Student Management System (SQL Project)
-## 📋 Project Overview
+
+# 📋 Project Overview
 
 The Student Management System is a MySQL-based database project designed to manage student records, subjects, and marks efficiently.
 It demonstrates core database design principles such as normalization, primary & foreign keys, and relationships between tables.
